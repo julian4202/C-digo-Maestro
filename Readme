@@ -1,0 +1,98 @@
+Manual de Uso – Bots Maestro y Esclavo en Reddit
+
+Este sistema está compuesto por dos scripts en Python que trabajan en conjunto:
+
+TFM_FINAL_MAESTRO.py → Publica en Reddit, extrae métricas y envía instrucciones.
+
+TFM_FINAL_ESCLAVO.py → Recibe las instrucciones del maestro, interactúa con las publicaciones (upvote y comentario) y genera respuestas automáticas.
+
+1. Requisitos previos
+
+Tener instalado Python 3.10 o superior.
+
+Instalar las librerías necesarias con el siguiente comando:
+
+pip install pyautogui pillow opencv-python pytesseract numpy matplotlib imapclient pyzmail6 openai
+
+
+Instalar Tesseract OCR:
+En Windows se descarga desde GitHub (UB-Mannheim build).
+En el código del maestro debes indicar la ruta, por ejemplo:
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+
+Guardar en la misma carpeta del script las imágenes que el bot busca en pantalla: chrome_icon.png, post.png, comentar.png, upcomentar.png. Estas imágenes se deben capturar directamente desde tu escritorio o navegador.
+
+Disponer de dos cuentas de correo Gmail configuradas en los scripts (una para maestro y otra para esclavo).
+
+Tener usuario y contraseña de Reddit para ambos bots.
+
+2. Flujo general
+
+El bot maestro abre Chrome, inicia sesión en Reddit y publica un post con un título y descripción.
+
+El maestro guarda la información en un archivo comando.txt y lo envía por correo electrónico al esclavo.
+
+El bot esclavo descarga el correo, extrae los datos de comando.txt y localiza la publicación en Reddit.
+
+El esclavo da upvote y comenta automáticamente en el post usando un texto generado con OpenAI.
+
+El esclavo repite este ciclo cada hora.
+
+3. Ejecución
+Maestro (TFM_FINAL_MAESTRO.py)
+
+Ejecuta el script en terminal:
+
+python TFM_FINAL_MAESTRO.py
+
+
+Aparece una ventana gráfica donde se introducen el usuario y contraseña de Reddit.
+
+Se presiona el botón “Logueo”.
+
+El bot abre Chrome, inicia sesión, publica un post y genera el archivo comando.txt.
+
+El archivo comando.txt se envía automáticamente al esclavo por correo.
+
+El maestro además extrae métricas del perfil (karma, antigüedad, oro, contribuciones).
+
+Esclavo (TFM_FINAL_ESCLAVO.py)
+
+Ejecuta el script en terminal:
+
+python TFM_FINAL_ESCLAVO.py
+
+
+El bot descarga el último correo con asunto “Comando para el bot esclavo”.
+
+Guarda el archivo comando.txt en la carpeta Descargas.
+
+Lee usuario y título del post.
+
+Abre Chrome, busca la publicación del maestro, da upvote y comenta con un texto generado dinámicamente.
+
+Espera 1 hora y repite el proceso.
+
+4. Archivos importantes
+
+comando.txt → Archivo que conecta maestro y esclavo. Contiene:
+
+usuario=NombreUsuarioMaestro
+titulo=Título del post publicado
+
+
+Imágenes de referencia → Deben estar en la carpeta del script para que PyAutoGUI reconozca los botones de Chrome y Reddit.
+
+5. Recomendaciones
+
+Ejecutar siempre en una pantalla de 1920x1080 para que las coordenadas de PyAutoGUI coincidan.
+
+No mover el mouse ni el teclado mientras el bot se está ejecutando.
+
+Si Reddit cambia la interfaz, se deben actualizar las imágenes de referencia (post.png, comentar.png, etc.).
+
+Para pruebas más rápidas, se puede reducir el valor de espera de 3600 segundos a un número menor.
+
+No usar cuentas personales de Reddit, ya que la automatización puede ser detectada y generar bloqueos o baneos.
