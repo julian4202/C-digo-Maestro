@@ -20,10 +20,10 @@ import re
 import os
 
 def enviar_comando_por_email():
-    remitente = "fosaken12gt@gmail.com"
-    contraseña = "cjaqdoandsogdspd"  # App password SIN espacios
+    remitente = "##"
+    contraseña = "##"  # App password SIN espacios
 
-    destinatario = "julianpinto258@gmail.com"  # <-- CORRECTO, este es el destino
+    destinatario = "##"  # <-- CORRECTO, este es el destino
 
     mensaje = EmailMessage()
     mensaje['Subject'] = "Comando para el bot esclavo"
